@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landlord Operations Survey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="chip">Mobile-first • Interview-guided</p>
+        <h1>Landlord Management Survey</h1>
+        <p class="subtitle">
+          A guided questionnaire designed to collect complete insights on rent
+          collection, maintenance, tenant screening, and apartment operations.
+        </p>
+        <div class="hero-meta">
+          <span id="progressText">Question 1 of 25</span>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="survey-card" aria-live="polite">
+        <div class="question-meta">
+          <p id="categoryTag" class="category"></p>
+          <p id="questionPrompt" class="prompt"></p>
+        </div>
+
+        <form id="surveyForm" class="answer-wrap">
+          <label for="response" class="sr-only">Response</label>
+          <textarea
+            id="response"
+            name="response"
+            rows="6"
+            placeholder="Type your answer here..."
+            required
+          ></textarea>
+          <p class="hint">
+            Tip: Encourage detailed responses with examples, workflows, and pain
+            points.
+          </p>
+        </form>
+
+        <div class="controls">
+          <button id="prevBtn" type="button" class="btn btn-secondary">
+            Previous
+          </button>
+          <button id="nextBtn" type="button" class="btn btn-primary">
+            Next
+          </button>
+        </div>
+      </section>
+
+      <section id="summary" class="summary hidden">
+        <h2>Survey response summary</h2>
+        <p>
+          You can review all answers below. This view helps validate if you've
+          captured enough details similar to the sample interview quality.
+        </p>
+        <div id="summaryList" class="summary-list"></div>
+        <button id="restartBtn" class="btn btn-primary">Start over</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

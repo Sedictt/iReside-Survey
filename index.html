@@ -25,9 +25,6 @@
         Interview-Guided
       </div>
       <h1>Dormitory Management Survey</h1>
-      <p class="subtitle">
-        A premium questionnaire to precisely capture insights on rent collection, maintenance, and dorm operations.
-      </p>
     </header>
 
     <div class="survey-container">
@@ -119,11 +116,29 @@
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
           Previous
         </button>
+        <button id="returnToReviewBtn" type="button" class="btn btn-warning hidden">
+          Return to Review
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
         <button id="nextBtn" type="button" class="btn btn-primary">
           <span>Next Question</span>
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
       </div>
+
+      <section id="reviewSection" class="survey-card hidden">
+        <div class="header">
+          <h2 class="section-title">Review & Submit</h2>
+          <p class="section-subtitle">Please ensure all questions are answered before submitting.</p>
+        </div>
+        <div id="reviewList" class="review-list">
+          <!-- Dynamically populated -->
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; justify-content: space-between;">
+           <button id="backToSurveyBtn" class="btn btn-secondary">Back to Survey</button>
+           <button id="finalSubmitBtn" class="btn btn-primary" disabled>Submit Survey</button>
+        </div>
+      </section>
 
       <section id="summary" class="summary hidden">
         <div class="summary-header">

@@ -181,11 +181,16 @@ const categoryTag = document.getElementById("categoryTag");
 const questionPrompt = document.getElementById("questionPrompt");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const returnToReviewBtn = document.getElementById("returnToReviewBtn");
 const summarySection = document.getElementById("summary");
 const summaryList = document.getElementById("summaryList");
 const restartBtn = document.getElementById("restartBtn");
 const surveyCard = document.getElementById("surveyCard");
 const surveyControls = document.getElementById("surveyControls");
+const reviewSection = document.getElementById("reviewSection");
+const reviewList = document.getElementById("reviewList");
+const backToSurveyBtn = document.getElementById("backToSurveyBtn");
+const finalSubmitBtn = document.getElementById("finalSubmitBtn");
 
 // Onboarding Elements
 const onboardingCard = document.getElementById("onboardingCard");
@@ -198,6 +203,7 @@ const startSurveyBtn = document.getElementById("startSurveyBtn");
 const consentLabelWrapper = document.getElementById("consentLabelWrapper");
 
 let currentIndex = 0;
+let isReviewing = false;
 // Answers array now stores objects { choices: [strings], text: string }
 const answers = Array(questions.length).fill(null).map(() => ({ choices: [], text: "" }));
 
@@ -349,13 +355,20 @@ function renderQuestion() {
   
   const nextText = nextBtn.querySelector('span');
   if (currentIndex === questions.length - 1) {
-    nextText.textContent = "Finish Survey";
+    nextText.textContent = "Review & Submit";
     nextBtn.style.background = "var(--success)";
     nextBtn.style.boxShadow = "0 4px 14px rgba(63, 185, 80, 0.3)";
   } else {
     nextText.textContent = "Next Question";
     nextBtn.style.background = "";
     nextBtn.style.boxShadow = "";
+  }
+
+  // Toggle return to review button visibility
+  if (isReviewing) {
+    returnToReviewBtn.classList.remove("hidden");
+  } else {
+    returnToReviewBtn.classList.add("hidden");
   }
 }
 
@@ -407,7 +420,7 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-nextBtn.addEventListener("click", async () => {
+nextBtn.addEventListener("click", () => {
   saveCurrentAnswer();
   if (currentIndex < questions.length - 1) {
     animateCardTransition('next', () => {
@@ -417,13 +430,100 @@ nextBtn.addEventListener("click", async () => {
     return;
   }
 
+  // Open Review Section instead of immediate submission
+  openReviewSection();
+});
+
+function openReviewSection() {
+  isReviewing = true;
+  surveyCard.classList.add("hidden");
+  surveyControls.classList.add("hidden");
+  progressSection.classList.add("hidden");
+
+  reviewSection.classList.remove("hidden");
+  renderReviewList();
+}
+
+function renderReviewList() {
+  reviewList.innerHTML = "";
+  let missingCount = 0;
+
+  questions.forEach((q, i) => {
+    const ans = answers[i];
+    // Check if answered: array has length OR text is filled
+    const isAnswered = ans.choices.length > 0 || ans.text.trim() !== "";
+    
+    if (!isAnswered) {
+      missingCount++;
+    }
+
+    const itemEl = document.createElement("div");
+    itemEl.className = `review-item ${isAnswered ? 'answered' : 'missing'}`;
+    
+    const detailsWrap = document.createElement("div");
+    detailsWrap.className = "review-info";
+    detailsWrap.innerHTML = `
+      <h3>Question ${i + 1} - ${isAnswered ? '✅ Answered' : '❌ Missed'}</h3>
+      <p>${q.prompt}</p>
+    `;
+
+    const jumpBtn = document.createElement("button");
+    jumpBtn.className = "btn btn-sm " + (isAnswered ? "btn-secondary" : "btn-warning");
+    jumpBtn.textContent = isAnswered ? "Edit" : "Jump to Question";
+    jumpBtn.onclick = () => {
+      jumpToQuestion(i);
+    };
+
+    itemEl.appendChild(detailsWrap);
+    itemEl.appendChild(jumpBtn);
+    reviewList.appendChild(itemEl);
+  });
+
+  const subtitle = reviewSection.querySelector(".section-subtitle");
+  if (missingCount === 0) {
+    subtitle.textContent = "All questions answered! You are ready to submit.";
+    subtitle.style.color = "var(--success)";
+    finalSubmitBtn.disabled = false;
+  } else {
+    subtitle.textContent = `You have ${missingCount} unanswered question(s). Please answer them before submitting.`;
+    subtitle.style.color = "#ef4444";
+    finalSubmitBtn.disabled = true;
+  }
+}
+
+function jumpToQuestion(index) {
+  currentIndex = index;
+  reviewSection.classList.add("hidden");
+  
+  surveyCard.classList.remove("hidden");
+  progressSection.classList.remove("hidden");
+  surveyControls.classList.remove("hidden");
+  
+  renderQuestion();
+}
+
+returnToReviewBtn.addEventListener("click", () => {
+  saveCurrentAnswer();
+  openReviewSection();
+});
+
+backToSurveyBtn.addEventListener("click", () => {
+  // Just go back to the last question looked at (or the end if we just finished)
+  reviewSection.classList.add("hidden");
+  surveyCard.classList.remove("hidden");
+  progressSection.classList.remove("hidden");
+  surveyControls.classList.remove("hidden");
+  renderQuestion();
+});
+
+finalSubmitBtn.addEventListener("click", async () => {
   // Finish survey logic - Save to Firebase
-  const nextText = nextBtn.querySelector('span');
-  const originalText = nextText.textContent;
+  const originalText = finalSubmitBtn.textContent;
   
   // Show loading state
-  nextText.textContent = "Saving...";
-  nextBtn.disabled = true;
+  finalSubmitBtn.textContent = "Saving...";
+  finalSubmitBtn.disabled = true;
+  backToSurveyBtn.disabled = true;
 
   try {
     // Format the completed data
@@ -444,9 +544,7 @@ nextBtn.addEventListener("click", async () => {
 
     // Proceed to summary view on success
     renderSummary();
-    surveyCard.classList.add("hidden");
-    progressSection.classList.add("hidden");
-    surveyControls.classList.add("hidden");
+    reviewSection.classList.add("hidden");
     
     summarySection.classList.remove("hidden");
     summarySection.style.opacity = '0';
@@ -462,8 +560,9 @@ nextBtn.addEventListener("click", async () => {
     alert("There was an error saving your response. Please check your connection and try again.");
     
     // Reset button state on failure
-    nextText.textContent = originalText;
-    nextBtn.disabled = false;
+    finalSubmitBtn.textContent = originalText;
+    finalSubmitBtn.disabled = false;
+    backToSurveyBtn.disabled = false;
   }
 });
 
@@ -471,10 +570,13 @@ restartBtn.addEventListener("click", () => {
   // reset answers
   answers.forEach(ans => { ans.choices = []; ans.text = ""; });
   currentIndex = 0;
+  isReviewing = false;
   
   summarySection.classList.add("hidden");
+  reviewSection.classList.add("hidden");
   surveyCard.classList.remove("hidden");
   progressSection.classList.remove("hidden");
+  surveyControls.classList.remove("hidden");
   
   renderQuestion();
   

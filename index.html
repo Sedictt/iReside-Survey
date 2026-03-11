@@ -98,33 +98,29 @@
             <!-- Options dynamically injected here -->
           </div>
           
-          <div class="textarea-wrapper mt-4">
-            <label for="response" class="optional-label">Additional Details / Custom Answer (Optional)</label>
-            <textarea
-              id="response"
-              name="response"
-              rows="3"
-              placeholder="Elaborate on your answer, provide an example, or fill in 'Other'..."
-            ></textarea>
-            <div class="textarea-focus-ring"></div>
+          <div class="mt-4" style="text-align: center;">
+            <button type="button" id="openDetailsModalBtn" class="btn btn-secondary" style="width: 100%;">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; margin-right: 8px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+              <span>Add Additional Details (Optional)</span>
+            </button>
           </div>
         </form>
-      </section>
 
-      <div class="controls sticky-controls hidden" id="surveyControls">
-        <button id="prevBtn" type="button" class="btn btn-secondary">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-          Previous
-        </button>
-        <button id="returnToReviewBtn" type="button" class="btn btn-warning hidden">
-          Return to Review
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-        </button>
-        <button id="nextBtn" type="button" class="btn btn-primary">
-          <span>Next Question</span>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-        </button>
-      </div>
+        <div class="controls hidden" id="surveyControls" style="margin-top: 2rem;">
+          <button id="prevBtn" type="button" class="btn btn-secondary">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            Previous
+          </button>
+          <button id="returnToReviewBtn" type="button" class="btn btn-warning hidden">
+            Return to Review
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+          <button id="nextBtn" type="button" class="btn btn-primary">
+            <span>Next Question</span>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </section>
 
       <section id="reviewSection" class="survey-card hidden">
         <div class="header">

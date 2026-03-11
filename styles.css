@@ -322,26 +322,6 @@ textarea:focus + .textarea-focus-ring {
   width: 100%;
 }
 
-.sticky-controls {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem 1.5rem;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--card-border);
-  z-index: 100;
-  max-width: 720px;
-  margin: 0 auto;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-}
-
-.app-shell {
-  padding-bottom: 8rem; /* Make room for sticky controls */
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -776,7 +756,7 @@ textarea:focus + .textarea-focus-ring {
 
 @media (max-width: 640px) {
   .app-shell {
-    padding: 2rem 1rem 11rem;
+    padding: 2rem 1rem 3rem;
   }
   
   .survey-card, .summary {

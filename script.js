@@ -186,6 +186,13 @@ const reviewList = document.getElementById("reviewList");
 const backToSurveyBtn = document.getElementById("backToSurveyBtn");
 const finalSubmitBtn = document.getElementById("finalSubmitBtn");
 
+// Modal Elements
+const detailsModal = document.getElementById("detailsModal");
+const openDetailsModalBtn = document.getElementById("openDetailsModalBtn");
+const closeDetailsModalBtn = document.getElementById("closeDetailsModalBtn");
+const saveDetailsBtn = document.getElementById("saveDetailsBtn");
+const responseEl = document.getElementById("response");
+
 // Onboarding Elements
 const onboardingCard = document.getElementById("onboardingCard");
 const ownerNameInput = document.getElementById("ownerNameInput");
@@ -211,6 +218,36 @@ function updateConsentState() {
     consentLabelWrapper.classList.add('selected');
   } else {
     consentLabelWrapper.classList.remove('selected');
+  }
+}
+
+// Modal Logic
+openDetailsModalBtn.addEventListener("click", () => {
+  responseEl.value = answers[currentIndex].text || "";
+  detailsModal.classList.add("active");
+});
+
+function closeDetailsModal() {
+  detailsModal.classList.remove("active");
+}
+
+closeDetailsModalBtn.addEventListener("click", closeDetailsModal);
+saveDetailsBtn.addEventListener("click", () => {
+  answers[currentIndex].text = responseEl.value.trim();
+  closeDetailsModal();
+  updateDetailsButtonState();
+});
+
+function updateDetailsButtonState() {
+  const hasText = answers[currentIndex].text.trim() !== "";
+  if (hasText) {
+    openDetailsModalBtn.classList.remove("btn-secondary");
+    openDetailsModalBtn.classList.add("btn-primary");
+    openDetailsModalBtn.querySelector("span").textContent = "Edit Details";
+  } else {
+    openDetailsModalBtn.classList.add("btn-secondary");
+    openDetailsModalBtn.classList.remove("btn-primary");
+    openDetailsModalBtn.querySelector("span").textContent = "Add Additional Details (Optional)";
   }
 }
 
@@ -340,8 +377,8 @@ function renderQuestion() {
     optionsContainer.appendChild(label);
   });
 
-  // Render previous text response 
-  responseEl.value = currentAnswer.text;
+  // Update details button based on current answer state
+  updateDetailsButtonState();
 
   updateProgress();
 
@@ -369,7 +406,7 @@ function renderQuestion() {
 function saveCurrentAnswer() {
   const checkedInputs = Array.from(document.querySelectorAll('input[name="surveyChoice"]:checked'));
   answers[currentIndex].choices = checkedInputs.map(input => input.value);
-  answers[currentIndex].text = responseEl.value.trim();
+  // text is saved via the modal now, so we don't overwrite it here
 }
 
 function renderSummary() {

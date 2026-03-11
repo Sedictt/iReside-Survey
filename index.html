@@ -1,76 +1,149 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Landlord Operations Survey</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="app-shell">
-      <header class="hero">
-        <p class="chip">Mobile-first • Interview-guided</p>
-        <h1>Landlord Management Survey</h1>
-        <p class="subtitle">
-          A guided questionnaire designed to collect complete insights on rent
-          collection, maintenance, tenant screening, and apartment operations.
-        </p>
-        <div class="hero-meta">
-          <span id="progressText">Question 1 of 25</span>
-          <div class="progress-track" aria-hidden="true">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-        </div>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dormitory Operations Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="background-effects">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+  </div>
 
-      <section class="survey-card" aria-live="polite">
+  <main class="app-shell">
+    <header class="hero">
+      <div class="chip">
+        <svg class="chip-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+        </svg>
+        Interview-Guided
+      </div>
+      <h1>Dormitory Management Survey</h1>
+      <p class="subtitle">
+        A premium questionnaire to precisely capture insights on rent collection, maintenance, and dorm operations.
+      </p>
+    </header>
+
+    <div class="survey-container">
+      <!-- Onboarding Section -->
+      <section class="survey-card" id="onboardingCard">
+        <div class="question-meta" style="margin-bottom: 1.5rem;">
+          <span class="category">Welcome</span>
+          <h2 class="prompt">Partnership Agreement & Consent</h2>
+        </div>
+        
+        <form id="onboardingForm" class="answer-wrap">
+          <div class="input-group">
+            <label for="ownerNameInput">Your Name (Owner)</label>
+            <input type="text" id="ownerNameInput" placeholder="e.g., Juan Dela Cruz" required>
+          </div>
+          <div class="input-group mt-3">
+            <label for="dormNameInput">Dormitory / Residence Name</label>
+            <input type="text" id="dormNameInput" placeholder="e.g., JV's Residence" required>
+          </div>
+
+          <div class="document-box mt-4">
+            <p><strong>TO:</strong> <span id="docOwnerName" style="text-decoration: underline;">[Name]</span></p>
+            <p><strong>Boarding House Owner,</strong> <span id="docDormName" style="text-decoration: underline;">[Dorm Residence]</span></p>
+            <p><strong>SUBJECT:</strong> Partnership Agreement</p>
+            <br>
+            <p>Good Day!</p>
+            <p>We, the third-year college students of Pamantasan ng Lungsod ng Valenzuela, taking up Bachelor of Science in Information Technology (BSIT), would like to seek your acceptance and cooperation to be part of an Interview Session for our proposed Capstone Project entitled <strong>iReside: Design and Development of an Integrated Property and Tenant Services Platform</strong>. Our Capstone Project is a partial requirement for our undergraduate study.</p>
+            <p>In line with this, we would like you to ask your good office to allow us to conduct our Interview within the premises of your office or preferred area on your own terms and availability. Attached to this letter is our Interview Questions which will be our guiding Questionnaire in performing the interview. In addition to this we would like to seek your approval to be our official beneficiary or client for the study. The agreed upon requirements and final output shall be implemented and evaluated based on your convenience and preferences.</p>
+            <p>We are ensuring your office as well that all data that the respondents will be providing upon answering this survey will be confidential and only be used in academic purposes. We are also seeking approval to conduct documentation and be allowed to take photos while the Interview process is ongoing.</p>
+            <p>Hoping for your consideration and approval regarding this matter.</p>
+            <p>Thank you and God Bless.</p>
+            <br>
+            <p><strong>MARGAUX ZYANN J. DELAOG</strong><br>Group Representative</p>
+            <br>
+            <p>NOTED BY:</p>
+            <p><strong>KENMAR C. BERNARDINO</strong><br>Chairperson, Information Technology Department</p>
+          </div>
+
+          <label class="option-label mt-4" id="consentLabelWrapper">
+            <input type="checkbox" id="consentCheck" class="option-input" required>
+            <span class="option-text">I have read the agreement above and consent to participate in this study.</span>
+          </label>
+        </form>
+
+        <div class="controls mt-4">
+          <button id="startSurveyBtn" type="button" class="btn btn-primary" style="width: 100%; transition: opacity 0.3s;" disabled>
+            <span>I Agree, Start Survey</span>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      <div class="progress-section hidden" id="progressSection">
+        <div class="progress-header">
+          <span id="progressText" class="progress-text">Question 1 of 25</span>
+          <span id="progressPercentage" class="progress-percentage">4%</span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <section class="survey-card hidden" aria-live="polite" id="surveyCard">
         <div class="question-meta">
-          <p id="categoryTag" class="category"></p>
-          <p id="questionPrompt" class="prompt"></p>
+          <span id="categoryTag" class="category"></span>
+          <h2 id="questionPrompt" class="prompt"></h2>
         </div>
 
         <form id="surveyForm" class="answer-wrap">
-          <label for="response" class="sr-only">Response</label>
-          <textarea
-            id="response"
-            name="response"
-            rows="6"
-            placeholder="Type your answer here..."
-            required
-          ></textarea>
-          <p class="hint">
-            Tip: Encourage detailed responses with examples, workflows, and pain
-            points.
-          </p>
+          <div id="optionsContainer" class="options-grid">
+            <!-- Options dynamically injected here -->
+          </div>
+          
+          <div class="textarea-wrapper mt-4">
+            <label for="response" class="optional-label">Additional Details / Custom Answer (Optional)</label>
+            <textarea
+              id="response"
+              name="response"
+              rows="3"
+              placeholder="Elaborate on your answer, provide an example, or fill in 'Other'..."
+            ></textarea>
+            <div class="textarea-focus-ring"></div>
+          </div>
         </form>
+      </section>
 
-        <div class="controls">
-          <button id="prevBtn" type="button" class="btn btn-secondary">
-            Previous
-          </button>
-          <button id="nextBtn" type="button" class="btn btn-primary">
-            Next
+      <div class="controls sticky-controls hidden" id="surveyControls">
+        <button id="prevBtn" type="button" class="btn btn-secondary">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          Previous
+        </button>
+        <button id="nextBtn" type="button" class="btn btn-primary">
+          <span>Next Question</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+
+      <section id="summary" class="summary hidden">
+        <div class="summary-header">
+          <div class="success-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h2>Survey Complete</h2>
+          <p>Review your detailed insights below.</p>
+        </div>
+        <div id="summaryList" class="summary-list"></div>
+        <div class="summary-controls">
+          <button id="restartBtn" class="btn btn-secondary">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            Start Over
           </button>
         </div>
       </section>
+    </div>
+  </main>
 
-      <section id="summary" class="summary hidden">
-        <h2>Survey response summary</h2>
-        <p>
-          You can review all answers below. This view helps validate if you've
-          captured enough details similar to the sample interview quality.
-        </p>
-        <div id="summaryList" class="summary-list"></div>
-        <button id="restartBtn" class="btn btn-primary">Start over</button>
-      </section>
-    </main>
-
-    <script src="script.js"></script>
-  </body>
+  <script type="module" src="script.js"></script>
+</body>
 </html>

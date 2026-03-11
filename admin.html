@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Dormitory Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .admin-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    
+    .admin-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+    
+    @media (min-width: 768px) {
+      .admin-container {
+        padding: 2rem 1.5rem;
+      }
+      .admin-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+      }
+      .actions {
+        flex-direction: row;
+        width: auto;
+      }
+    }
+    
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+    
+    /* Desktop Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      display: none;
+    }
+    
+    @media (min-width: 768px) {
+      table {
+        display: table;
+      }
+    }
+    
+    th, td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    th {
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    
+    td {
+      font-size: 0.95rem;
+    }
+    
+    .view-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: rgba(88, 166, 255, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(88, 166, 255, 0.2);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      text-align: center;
+    }
+    
+    @media (min-width: 768px) {
+      .view-btn {
+        width: auto;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+    }
+    
+    .view-btn:hover {
+      background: rgba(88, 166, 255, 0.2);
+    }
+
+    #loadingText {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+    }
+    
+    /* Mobile Cards View */
+    .mobile-list {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    @media (min-width: 768px) {
+      .mobile-list {
+        display: none;
+      }
+    }
+    
+    .mobile-card {
+      padding: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .mobile-card:last-child {
+      border-bottom: none;
+    }
+    
+    .mc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .mc-date {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    
+    .mc-count {
+      font-size: 0.8rem;
+      background: rgba(255,255,255,0.1);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+    
+    .mc-preview {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* Mobile bottom sheet */
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    @media (min-width: 768px) {
+      .modal-overlay {
+        align-items: center;
+        padding: 1rem;
+      }
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: var(--bg-color);
+      width: 100%;
+      max-width: 800px;
+      height: 85vh; /* Mobile height */
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border: 1px solid var(--card-border);
+      border-bottom: none;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    @media (min-width: 768px) {
+      .modal-content {
+        height: auto;
+        max-height: 90vh;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--card-border);
+        transform: translateY(20px);
+      }
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: var(--bg-color);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      z-index: 10;
+    }
+    
+    .modal-header h2 {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .close-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.4rem;
+      display: grid;
+      place-content: center;
+      transition: var(--transition);
+    }
+    
+    .close-btn:hover {
+      color: var(--text-main);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .response-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .response-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .response-q {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .response-a {
+      color: var(--text-main);
+      padding-left: 1rem;
+      border-left: 2px solid rgba(88, 166, 255, 0.3);
+      line-height: 1.5;
+    }
+
+    .response-text {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+    }
+    
+    /* Drag Handle for Mobile Modal feel */
+    .modal-drag-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: block;
+    }
+    
+    @media (min-width: 768px) {
+      .modal-drag-handle {
+        display: none;
+      }
+      .modal-header {
+        padding-top: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-effects">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+  </div>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <div>
+        <h1>Responses</h1>
+        <p class="subtitle">Manage dorm survey feedback</p>
+      </div>
+      <div class="actions">
+        <!-- Desktop buttons look normal, Mobile buttons stack 100% width -->
+        <a href="index.html" class="btn btn-secondary" style="justify-content: center;">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          Back to Survey
+        </a>
+        <button id="exportCsvBtn" class="btn btn-primary" style="justify-content: center; margin: 0; padding: 0.7rem 1rem;">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          Export Data (CSV)
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <!-- Mobile List View -->
+      <div id="mobileList" class="mobile-list">
+        <!-- Cards injected here -->
+      </div>
+      
+      <!-- Desktop Table View -->
+      <table id="responsesTable">
+        <thead>
+          <tr>
+            <th>Date Submitted</th>
+            <th>Answers</th>
+            <th>Data Preview</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Rows injected here -->
+        </tbody>
+      </table>
+      
+      <div id="loadingText">Loading database...</div>
+    </div>
+  </div>
+
+  <!-- Modal for viewing single response -->
+  <div class="modal-overlay" id="responseModal">
+    <div class="modal-content">
+      <div class="modal-drag-handle"></div>
+      <div class="modal-header">
+        <h2 id="modalDate">Submission</h2>
+        <button class="close-btn" id="closeModalBtn">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Details injected here -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

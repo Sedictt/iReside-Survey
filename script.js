@@ -191,7 +191,6 @@ const detailsModal = document.getElementById("detailsModal");
 const openDetailsModalBtn = document.getElementById("openDetailsModalBtn");
 const closeDetailsModalBtn = document.getElementById("closeDetailsModalBtn");
 const saveDetailsBtn = document.getElementById("saveDetailsBtn");
-const responseEl = document.getElementById("response");
 
 // Onboarding Elements
 const onboardingCard = document.getElementById("onboardingCard");

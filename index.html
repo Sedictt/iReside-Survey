@@ -155,6 +155,28 @@
     </div>
   </main>
 
+  <!-- Additional Details Modal -->
+  <div class="modal-overlay" id="detailsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Additional Details</h3>
+        <button class="close-btn" id="closeDetailsModalBtn">&times;</button>
+      </div>
+      <div>
+        <textarea
+          id="response"
+          name="response"
+          rows="5"
+          placeholder="Elaborate on your answer, provide an example, or fill in 'Other'..."
+          style="margin-bottom: 0;"
+        ></textarea>
+        <div style="margin-top: 1rem; text-align: right;">
+          <button type="button" id="saveDetailsBtn" class="btn btn-primary" style="width: 100%;">Save Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="script.js"></script>
 </body>
 </html>

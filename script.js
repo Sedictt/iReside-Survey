@@ -110,12 +110,6 @@ const questions = [
     options: ["Physical folders in a cabinet", "Local computer folders", "Cloud Storage (Google Drive, Dropbox)", "Property Management App"]
   },
   {
-    category: "Legal Compliance",
-    prompt: "Which legal requirement do you find most tedious to maintain for a dorm?",
-    type: "single",
-    options: ["Barangay / Mayor's Permits", "BIR / Tax filings", "Fire & Safety (Sanitary/Health) inspections", "Notarizing Contracts"]
-  },
-  {
     category: "Time Management",
     prompt: "Which of these consumes most of your time each week?",
     type: "single",
